@@ -6,7 +6,7 @@
   <title>소상공인 리더십 자가진단</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
       background: #f4f7fb;
       margin: 0;
       padding: 20px;
@@ -25,11 +25,24 @@
       font-weight: bold;
       margin: 20px 0;
     }
-    .options label {
+    .options {
+      margin: 20px 0;
+    }
+    .option-label {
       display: block;
-      margin: 10px 0;
+      margin: 15px 0;
+      padding: 10px;
       text-align: left;
       cursor: pointer;
+      background: #f9f9f9;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .option-label:hover {
+      background: #f0f0f0;
+    }
+    .option-label input[type="radio"] {
+      margin-right: 10px;
     }
     button {
       margin-top: 30px;
@@ -43,6 +56,10 @@
     }
     button:hover {
       background: #2980b9;
+    }
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
     }
     .result {
       font-size: 32px;
@@ -65,15 +82,21 @@
     .guide h3 {
       color: #2980b9;
     }
+    .progress {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>소상공인 리더십 자가진단</h1>
     <div id="quiz">
+      <div id="progress" class="progress"></div>
       <div id="questionBox" class="question"></div>
       <div id="optionsBox" class="options"></div>
-      <button id="nextBtn">다음</button>
+      <button id="nextBtn" disabled>다음</button>
     </div>
     <div id="finalMessage" class="question" style="display:none;">수고하셨습니다. 결과를 보겠습니다.</div>
     <div id="result" class="result"></div>
@@ -144,25 +167,35 @@
     const result = document.getElementById("result");
     const desc = document.getElementById("desc");
     const allGuides = document.getElementById("allGuides");
+    const progress = document.getElementById("progress");
 
     function showQuestion(index) {
+      progress.innerText = `${index + 1} / ${questions.length}`;
       questionBox.innerText = `${index + 1}. ${questions[index]}`;
       optionsBox.innerHTML = "";
       selected = null;
+      nextBtn.disabled = true;
+
       for (let i = 0; i < 4; i++) {
         const label = document.createElement("label");
+        label.className = "option-label";
+        
         const input = document.createElement("input");
         input.type = "radio";
         input.name = "option";
         input.value = types[i];
-        input.onclick = () => selected = types[i];
+        input.onclick = function() {
+          selected = types[i];
+          nextBtn.disabled = false;
+        };
+        
         label.appendChild(input);
-        label.append(" " + options[index][i]);
+        label.appendChild(document.createTextNode(options[index][i]));
         optionsBox.appendChild(label);
       }
     }
 
-    nextBtn.addEventListener("click", () => {
+    nextBtn.addEventListener("click", function() {
       if (!selected) {
         alert("답변을 선택해주세요.");
         return;
@@ -178,14 +211,16 @@
         finalMessage.style.display = "block";
 
         const topType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-        setTimeout(() => {
+        
+        setTimeout(function() {
           result.innerHTML = `🎯 당신의 리더십 유형은 <span style="color:#2980b9">${topType}</span> 입니다.`;
           desc.innerHTML = `
             <p style="font-size:22px;"><strong>💪 강점:</strong> ${descriptions[topType].강점}</p>
             <p style="font-size:22px;"><strong>🛠 개선할 점:</strong> ${descriptions[topType].개선}</p>
           `;
           allGuides.innerHTML = `<hr><h2 style="text-align:center;">📘 리더십 유형별 전체 가이드북</h2>`;
-          for (let type of types) {
+          
+          types.forEach(function(type) {
             allGuides.innerHTML += `
               <div class="guide">
                 <h3>${type} 리더 가이드북</h3>
@@ -193,12 +228,15 @@
                 <p><strong>🛠 개선할 점:</strong> ${descriptions[type].개선}</p>
               </div>
             `;
-          }
+          });
         }, 1000);
       }
     });
 
-    showQuestion(currentQuestion);
+    // 페이지 로드 시 첫 번째 질문 표시
+    window.onload = function() {
+      showQuestion(currentQuestion);
+    };
   </script>
 </body>
 </html>
