@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,7 +12,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 30px;
       background: #fff;
@@ -46,10 +45,25 @@
       background: #2980b9;
     }
     .result {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
       margin-top: 40px;
       color: #2c3e50;
+    }
+    .description {
+      margin-top: 20px;
+      font-size: 20px;
+      text-align: left;
+    }
+    .guide {
+      background: #eef5ff;
+      padding: 20px;
+      margin-top: 30px;
+      border-left: 5px solid #3498db;
+      text-align: left;
+    }
+    .guide h3 {
+      color: #2980b9;
     }
   </style>
 </head>
@@ -63,6 +77,8 @@
     </div>
     <div id="finalMessage" class="question" style="display:none;">수고하셨습니다. 결과를 보겠습니다.</div>
     <div id="result" class="result"></div>
+    <div id="desc" class="description"></div>
+    <div id="allGuides"></div>
   </div>
 
   <script>
@@ -99,6 +115,25 @@
     const types = ["엄마형", "코치형", "장인형", "지휘관형"];
     const scores = { '엄마형': 0, '코치형': 0, '장인형': 0, '지휘관형': 0 };
 
+    const descriptions = {
+      "엄마형": {
+        강점: "정서적 유대감과 공감능력이 뛰어나며 따뜻한 분위기를 조성합니다. 직원들이 안정감을 느끼고 장기근속하는 데 매우 유리한 리더십입니다.",
+        개선: "감정에만 치우치면 기준이 없어지고 팀 운영에 혼선이 생길 수 있습니다. 피드백과 기준 설정을 병행하는 훈련이 필요합니다."
+      },
+      "코치형": {
+        강점: "직원의 성장을 돕고 대화로 이끄는 능력이 뛰어나며, 젊은 세대와의 소통이 자연스럽습니다. 책임감과 자율성을 유도할 수 있습니다.",
+        개선: "결론이 흐려지거나 지시가 부족해 혼란이 생기기 쉽습니다. 방향 제시와 실행 계획을 명확히 해야 실행력이 높아집니다."
+      },
+      "장인형": {
+        강점: "품질과 완성도를 중시하고, 책임감 있게 운영합니다. 꼼꼼하고 체계적인 업무로 고객과 팀의 신뢰를 얻을 수 있습니다.",
+        개선: "지나친 디테일 요구나 지적은 위축을 부를 수 있습니다. 칭찬 후 피드백 방식으로 균형 잡힌 리더십이 필요합니다."
+      },
+      "지휘관형": {
+        강점: "빠른 판단력과 추진력으로 위기 대응에 강합니다. 목표 중심의 운영을 통해 매출과 성과 달성에 유리합니다.",
+        개선: "지시 위주의 리더십은 거리감을 유발할 수 있습니다. 감정 표현과 공감을 함께 전하는 리더십 연습이 필요합니다."
+      }
+    };
+
     let currentQuestion = 0;
     let selected = null;
 
@@ -107,6 +142,8 @@
     const nextBtn = document.getElementById("nextBtn");
     const finalMessage = document.getElementById("finalMessage");
     const result = document.getElementById("result");
+    const desc = document.getElementById("desc");
+    const allGuides = document.getElementById("allGuides");
 
     function showQuestion(index) {
       questionBox.innerText = `${index + 1}. ${questions[index]}`;
@@ -133,7 +170,6 @@
       }
 
       scores[selected]++;
-
       currentQuestion++;
 
       if (currentQuestion < questions.length) {
@@ -142,15 +178,29 @@
         document.getElementById("quiz").style.display = "none";
         finalMessage.style.display = "block";
 
-        // 결과 계산 및 표시
         const topType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         setTimeout(() => {
           result.innerHTML = `🎯 당신의 리더십 유형은 <span style="color:#2980b9">${topType}</span> 입니다.`;
+
+          desc.innerHTML = `
+            <p><strong>💪 강점:</strong> ${descriptions[topType].강점}</p>
+            <p><strong>🛠 개선할 점:</strong> ${descriptions[topType].개선}</p>
+          `;
+
+          allGuides.innerHTML = `<hr><h2 style="text-align:center;">📘 리더십 유형별 전체 가이드북</h2>`;
+          for (let type of types) {
+            allGuides.innerHTML += `
+              <div class="guide">
+                <h3>${type} 리더 가이드북</h3>
+                <p><strong>💪 강점:</strong> ${descriptions[type].강점}</p>
+                <p><strong>🛠 개선할 점:</strong> ${descriptions[type].개선}</p>
+              </div>
+            `;
+          }
         }, 1000);
       }
     });
 
-    // 초기 첫 질문 표시
     showQuestion(currentQuestion);
   </script>
 </body>
