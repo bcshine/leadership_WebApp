@@ -1,62 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>소상공인 리더십 자가진단 웹앱</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>소상공인 리더십 자가진단</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f7f9fb; margin: 0; padding: 20px; }
-    h1 { text-align: center; color: #2c3e50; }
-    .container { max-width: 800px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .question { font-weight: bold; margin-top: 20px; }
-    .options label { display: block; margin: 5px 0; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; background: #3498db; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #2980b9; }
-    .result { margin-top: 30px; font-size: 18px; }
-    .guide-box { display: none; padding: 20px; margin-top: 20px; background: #eef5ff; border-left: 5px solid #3498db; }
-    .guide-link { margin-top: 20px; display: block; text-align: center; font-weight: bold; }
-    @media (max-width: 600px) {
-      .container { padding: 10px; }
-      button { width: 100%; font-size: 18px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .options label {
+      display: block;
+      margin: 10px 0;
+      text-align: left;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .result {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 40px;
+      color: #2c3e50;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>소상공인 리더십 자가진단</h1>
-    <form id="quizForm"></form>
-    <div class="result" id="result"></div>
-
-    <div id="엄마형-guide" class="guide-box">
-      <strong>엄마형 리더 가이드북</strong><br>
-      💪 <b>강점:</b> 직원과의 정서적 유대와 공감능력이 뛰어나며, 가족 같은 분위기를 잘 조성합니다. 덕분에 직원들이 정서적으로 안정감을 느끼고 오랜 시간 함께 일하는 경우가 많습니다.<br><br>
-      🛠 <b>개선점:</b> 너무 감정적으로만 대하거나 기준이 없으면 오히려 팀이 혼란스러워질 수 있습니다. 분명한 규칙과 기대치를 설정하고, 피드백을 자연스럽게 줄 수 있도록 연습해야 합니다.
+    <div id="quiz">
+      <div id="questionBox" class="question"></div>
+      <div id="optionsBox" class="options"></div>
+      <button id="nextBtn">다음</button>
     </div>
-
-    <div id="코치형-guide" class="guide-box">
-      <strong>코치형 리더 가이드북</strong><br>
-      💪 <b>강점:</b> 직원들의 의견을 존중하고 그들의 성장을 돕는 리더입니다. 대화 중심의 리더십으로 구성원에게 스스로 생각하고 결정하게 함으로써 책임감과 몰입을 끌어낼 수 있습니다.<br><br>
-      🛠 <b>개선점:</b> 결정 지연이나 방향성 부족으로 비효율이 생길 수 있습니다. 명확한 결론 제시, 책임 분배, 기한 설정 등 실행력을 높이는 연습이 필요합니다.
-    </div>
-
-    <div id="장인형-guide" class="guide-box">
-      <strong>장인형 리더 가이드북</strong><br>
-      💪 <b>강점:</b> 품질과 완성도를 중시하고, 전문성 있는 운영으로 브랜드 신뢰도를 높입니다. 꼼꼼한 성격 덕분에 일의 정확성이 뛰어나며 고객 만족도를 끌어올립니다.<br><br>
-      🛠 <b>개선점:</b> 직원 입장에서는 지적과 완벽주의로 인해 위축감을 느낄 수 있습니다. ‘칭찬 후 피드백’ 방식으로 균형을 맞추고, 직원의 성장 속도를 이해하는 여유도 필요합니다.
-    </div>
-
-    <div id="지휘관형-guide" class="guide-box">
-      <strong>지휘관형 리더 가이드북</strong><br>
-      💪 <b>강점:</b> 빠른 판단력과 실행력, 위기 상황에서의 냉철한 리더십을 갖춘 스타일입니다. 명확한 목표 제시와 추진력이 뛰어나 매출이나 성과에 강한 영향을 줍니다.<br><br>
-      🛠 <b>개선점:</b> 지나친 지시형 리더십은 직원과의 거리감을 만들 수 있습니다. 실행 전에 짧은 감정표현과 공감의 말 한마디가 조직 전체의 분위기를 바꿀 수 있습니다.
-    </div>
-
-    <a href="리더십_가이드북_웹페이지.html" class="guide-link" target="_blank">📘 전체 리더십 가이드북 보기</a>
+    <div id="finalMessage" class="question" style="display:none;">수고하셨습니다. 결과를 보겠습니다.</div>
+    <div id="result" class="result"></div>
   </div>
 
   <script>
-    const form = document.getElementById('quizForm');
-    const resultDiv = document.getElementById('result');
     const questions = [
       "직원이 실수했을 때 나는?",
       "내가 가장 중요하게 생각하는 것은?",
@@ -72,69 +81,77 @@
       "매장이 바쁠 때 나는?"
     ];
 
-    const choices = [
-      ["엄마형", "코치형", "장인형", "지휘관형"]
+    const options = [
+      ["괜찮아~ 누구나 실수할 수 있지", "왜 그런 실수를 했는지 물어본다", "기준에 안 맞았다고 지적한다", "원인 파악 후 다시 시킨다"],
+      ["서로 잘 지내는 분위기", "직원의 성장과 학습", "완성도 높은 일", "효율과 결과"],
+      ["요즘 힘든지부터 물어본다", "스스로 고민하게 유도한다", "원하는 답 나올 때까지 설명한다", "빠르게 판단해서 알려준다"],
+      ["참는 편이다", "피드백하며 알게 한다", "기준대로 다시 시킨다", "명확히 지시한다"],
+      ["내가 너무 잘해준 건 아닌가", "욕구를 몰랐던 건 아닐까", "자부심이 부족했던 건 아닐까", "변화에 못 따라온 거라 본다"],
+      ["적응 먼저 하게 둔다", "같이 하면서 가르친다", "기준을 명확히 설명한다", "일단 시켜보고 피드백한다"],
+      ["사기를 먼저 챙긴다", "대화로 풀려고 한다", "매뉴얼을 다시 본다", "목표부터 다시 세운다"],
+      ["직원들 걱정이 든다", "함께 원인을 찾는다", "문제 원인을 분석한다", "빠르게 대응 전략을 짠다"],
+      ["위로한다", "일정 조정해준다", "원칙을 지킨다", "대체 인력을 바로 투입한다"],
+      ["힘들지? 괜찮아?", "이번에 뭐 배웠어?", "디테일이 안 맞아", "이거 바로 처리하자"],
+      ["맛있는 걸 사준다", "무엇을 배웠는지 묻는다", "디테일을 칭찬한다", "성과를 언급한다"],
+      ["직원이 힘들까봐 내 일을 줄인다", "역할을 분담해 조율한다", "우선순위를 정해 처리한다", "필요한 일부터 지시한다"]
     ];
 
-    for (let i = 0; i < questions.length; i++) {
-      const div = document.createElement('div');
-      div.classList.add('question');
-      div.innerText = `${i + 1}. ${questions[i]}`;
-      form.appendChild(div);
-      const optionsDiv = document.createElement('div');
-      optionsDiv.classList.add('options');
-      const labels = [
-        ["괜찮아~ 누구나 실수할 수 있지", "왜 그런 실수를 했는지 물어본다", "기준에 안 맞았다고 지적한다", "원인 파악 후 다시 시킨다"],
-        ["서로 잘 지내는 분위기", "직원의 성장과 학습", "완성도 높은 일", "효율과 결과"],
-        ["요즘 힘든지부터 물어본다", "스스로 고민하게 유도한다", "원하는 답 나올 때까지 설명한다", "빠르게 판단해서 알려준다"],
-        ["참는 편이다", "피드백하며 알게 한다", "기준대로 다시 시킨다", "명확히 지시한다"],
-        ["내가 너무 잘해준 건 아닌가", "욕구를 몰랐던 건 아닐까", "자부심이 부족했던 건 아닐까", "변화에 못 따라온 거라 본다"],
-        ["적응 먼저 하게 둔다", "같이 하면서 가르친다", "기준을 명확히 설명한다", "일단 시켜보고 피드백한다"],
-        ["사기를 먼저 챙긴다", "대화로 풀려고 한다", "매뉴얼을 다시 본다", "목표부터 다시 세운다"],
-        ["직원들 걱정이 든다", "함께 원인을 찾는다", "문제 원인을 분석한다", "빠르게 대응 전략을 짠다"],
-        ["위로한다", "일정 조정해준다", "원칙을 지킨다", "대체 인력을 바로 투입한다"],
-        ["힘들지? 괜찮아?", "이번에 뭐 배웠어?", "디테일이 안 맞아", "이거 바로 처리하자"],
-        ["맛있는 걸 사준다", "무엇을 배웠는지 묻는다", "디테일을 칭찬한다", "성과를 언급한다"],
-        ["직원이 힘들까봐 내 일을 줄인다", "역할을 분담해 조율한다", "우선순위를 정해 처리한다", "필요한 일부터 지시한다"]
-      ];
-      for (let j = 0; j < 4; j++) {
-        const label = document.createElement('label');
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = `q${i+1}`;
-        input.value = choices[0][j];
+    const types = ["엄마형", "코치형", "장인형", "지휘관형"];
+    const scores = { '엄마형': 0, '코치형': 0, '장인형': 0, '지휘관형': 0 };
+
+    let currentQuestion = 0;
+    let selected = null;
+
+    const questionBox = document.getElementById("questionBox");
+    const optionsBox = document.getElementById("optionsBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const finalMessage = document.getElementById("finalMessage");
+    const result = document.getElementById("result");
+
+    function showQuestion(index) {
+      questionBox.innerText = `${index + 1}. ${questions[index]}`;
+      optionsBox.innerHTML = "";
+      selected = null;
+
+      for (let i = 0; i < 4; i++) {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "option";
+        input.value = types[i];
+        input.onclick = () => selected = types[i];
         label.appendChild(input);
-        label.append(` ${labels[i][j]}`);
-        optionsDiv.appendChild(label);
+        label.append(" " + options[index][i]);
+        optionsBox.appendChild(label);
       }
-      form.appendChild(optionsDiv);
     }
 
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'submit';
-    submitBtn.textContent = '진단 결과 보기';
-    form.appendChild(submitBtn);
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const scores = { '엄마형': 0, '코치형': 0, '장인형': 0, '지휘관형': 0 };
-      for (let [key, value] of formData.entries()) {
-        if (scores.hasOwnProperty(value)) {
-          scores[value]++;
-        }
+    nextBtn.addEventListener("click", () => {
+      if (!selected) {
+        alert("답변을 선택해주세요.");
+        return;
       }
-      let topType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
-      resultDiv.innerHTML = `<strong>당신의 리더십 유형은: ${topType}</strong><br>아래 맞춤형 가이드북을 확인하세요.`;
+      scores[selected]++;
 
-      document.querySelectorAll('.guide-box').forEach(div => div.style.display = 'none');
-      const target = document.getElementById(`${topType}-guide`);
-      if (target) {
-        target.style.display = 'block';
-        target.scrollIntoView({ behavior: 'smooth' });
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        showQuestion(currentQuestion);
+      } else {
+        document.getElementById("quiz").style.display = "none";
+        finalMessage.style.display = "block";
+
+        // 결과 계산 및 표시
+        const topType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        setTimeout(() => {
+          result.innerHTML = `🎯 당신의 리더십 유형은 <span style="color:#2980b9">${topType}</span> 입니다.`;
+        }, 1000);
       }
     });
+
+    // 초기 첫 질문 표시
+    showQuestion(currentQuestion);
   </script>
 </body>
 </html>
