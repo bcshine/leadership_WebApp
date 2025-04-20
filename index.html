@@ -70,15 +70,11 @@
 <body>
   <div class="container">
     <h1>소상공인 리더십 자가진단</h1>
-
-    <!-- 문항 영역 -->
     <div id="quiz">
       <div id="questionBox" class="question"></div>
       <div id="optionsBox" class="options"></div>
       <button id="nextBtn">다음</button>
     </div>
-
-    <!-- 결과 표시 영역 -->
     <div id="finalMessage" class="question" style="display:none;">수고하셨습니다. 결과를 보겠습니다.</div>
     <div id="result" class="result"></div>
     <div id="desc" class="description"></div>
@@ -86,15 +82,39 @@
   </div>
 
   <script>
-    // 1. 질문 및 보기
-    const questions = [/* 12개 질문 생략, 위에 붙여넣기 가능 */];
-    const options = [/* 각 질문의 보기 4개씩 생략 */];
+    const questions = [
+      "직원이 실수했을 때 나는?",
+      "내가 가장 중요하게 생각하는 것은?",
+      "직원이 질문했을 때 나는?",
+      "일이 마음에 안 들었을 때 나는?",
+      "퇴사나 불만이 생겼을 때 나는?",
+      "신입 직원을 교육할 때 나는?",
+      "팀 분위기가 흐릿할 때 나는?",
+      "매출이 떨어졌을 때 나는?",
+      "직원이 개인 사정으로 일을 못할 때 나는?",
+      "내가 자주 하는 말은?",
+      "직원이 칭찬받을 행동을 했을 때 나는?",
+      "매장이 바쁠 때 나는?"
+    ];
 
-    // 2. 리더십 유형 정의
+    const options = [
+      ["괜찮아~ 누구나 실수할 수 있지", "왜 그런 실수를 했는지 물어본다", "기준에 안 맞았다고 지적한다", "원인 파악 후 다시 시킨다"],
+      ["서로 잘 지내는 분위기", "직원의 성장과 학습", "완성도 높은 일", "효율과 결과"],
+      ["요즘 힘든지부터 물어본다", "스스로 고민하게 유도한다", "원하는 답 나올 때까지 설명한다", "빠르게 판단해서 알려준다"],
+      ["참는 편이다", "피드백하며 알게 한다", "기준대로 다시 시킨다", "명확히 지시한다"],
+      ["내가 너무 잘해준 건 아닌가", "욕구를 몰랐던 건 아닐까", "자부심이 부족했던 건 아닐까", "변화에 못 따라온 거라 본다"],
+      ["적응 먼저 하게 둔다", "같이 하면서 가르친다", "기준을 명확히 설명한다", "일단 시켜보고 피드백한다"],
+      ["사기를 먼저 챙긴다", "대화로 풀려고 한다", "매뉴얼을 다시 본다", "목표부터 다시 세운다"],
+      ["직원들 걱정이 든다", "함께 원인을 찾는다", "문제 원인을 분석한다", "빠르게 대응 전략을 짠다"],
+      ["위로한다", "일정 조정해준다", "원칙을 지킨다", "대체 인력을 바로 투입한다"],
+      ["힘들지? 괜찮아?", "이번에 뭐 배웠어?", "디테일이 안 맞아", "이거 바로 처리하자"],
+      ["맛있는 걸 사준다", "무엇을 배웠는지 묻는다", "디테일을 칭찬한다", "성과를 언급한다"],
+      ["직원이 힘들까봐 내 일을 줄인다", "역할을 분담해 조율한다", "우선순위를 정해 처리한다", "필요한 일부터 지시한다"]
+    ];
+
     const types = ["엄마형", "코치형", "장인형", "지휘관형"];
     const scores = { '엄마형': 0, '코치형': 0, '장인형': 0, '지휘관형': 0 };
 
-    // 3. 유형별 강점 및 개선점 설명
     const descriptions = {
       "엄마형": {
         강점: "정서적 유대감과 공감능력이 뛰어나며 따뜻한 분위기를 조성합니다. 직원들이 안정감을 느끼고 장기근속하는 데 매우 유리한 리더십입니다.",
@@ -114,7 +134,9 @@
       }
     };
 
-    // 4. DOM 요소 변수
+    let currentQuestion = 0;
+    let selected = null;
+
     const questionBox = document.getElementById("questionBox");
     const optionsBox = document.getElementById("optionsBox");
     const nextBtn = document.getElementById("nextBtn");
@@ -122,10 +144,6 @@
     const result = document.getElementById("result");
     const desc = document.getElementById("desc");
     const allGuides = document.getElementById("allGuides");
-
-    // 5. 현재 질문 상태
-    let currentQuestion = 0;
-    let selected = null;
 
     function showQuestion(index) {
       questionBox.innerText = `${index + 1}. ${questions[index]}`;
@@ -166,8 +184,6 @@
             <p style="font-size:22px;"><strong>💪 강점:</strong> ${descriptions[topType].강점}</p>
             <p style="font-size:22px;"><strong>🛠 개선할 점:</strong> ${descriptions[topType].개선}</p>
           `;
-
-          // 전체 가이드북 출력
           allGuides.innerHTML = `<hr><h2 style="text-align:center;">📘 리더십 유형별 전체 가이드북</h2>`;
           for (let type of types) {
             allGuides.innerHTML += `
@@ -182,7 +198,6 @@
       }
     });
 
-    // 첫 질문 보여주기
     showQuestion(currentQuestion);
   </script>
 </body>
